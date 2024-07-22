@@ -51,10 +51,12 @@
 		4BE4906310445F2F006BE471 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4BE4906710445F36006BE471 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		8D1107320486CEB800E47090 /* SMJobBlessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMJobBlessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B53333C82C4EC1C6003ACE49 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B53333C92C4EC1C6003ACE49 /* patch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = patch.json; sourceTree = "<group>"; };
+		B53333CA2C4EC1C6003ACE49 /* mac_patch_helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mac_patch_helper; sourceTree = "<group>"; };
 		BF04235411C0531400431286 /* SMJobBlessAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMJobBlessAppController.h; sourceTree = "<group>"; };
 		BF04235511C0531400431286 /* SMJobBlessAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMJobBlessAppController.m; sourceTree = "<group>"; };
 		BF65C19011B985C0007C20AB /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		E49FD424160884C000E6D764 /* ReadMe.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
 		E49FD425160884CE00E6D764 /* SMJobBlessUtil.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = SMJobBlessUtil.py; sourceTree = "<group>"; };
 		E49FD4261608971E00E6D764 /* Uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Uninstall.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,7 +94,9 @@
 		29B97314FDCFA39411CA2CEA /* SMJobBless */ = {
 			isa = PBXGroup;
 			children = (
-				E49FD424160884C000E6D764 /* ReadMe.txt */,
+				B53333CA2C4EC1C6003ACE49 /* mac_patch_helper */,
+				B53333C92C4EC1C6003ACE49 /* patch.json */,
+				B53333C82C4EC1C6003ACE49 /* README.md */,
 				4BE4904710445D49006BE471 /* SMJobBlessApp */,
 				4BE4905210445DDD006BE471 /* SMJobBlessHelper */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,

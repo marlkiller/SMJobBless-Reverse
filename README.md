@@ -17,6 +17,9 @@ designated => identifier "com.apple.bsd.SMJobBlessHelper" and anchor apple gener
 <array>
     <string>identifier "com.apple.bsd.SMJobBlessApp" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
 </array>
+
+# python SMJobBlessUtil.py check /Applications/SMJobBlessApp.app
+
 ```
 
 #### app
@@ -59,13 +62,10 @@ sudo rm /Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper
 ```
 
 
-### 手动签名?
+### TODO ??
 
 ```
 python SMJobBlessUtil.py setreq /Applications/SMJobBlessApp.app SMJobBlessApp/SMJobBlessApp-Info.plist SMJobBlessHelper/SMJobBlessHelper-Info.plist
 ```
-### 检测
-```
-python SMJobBlessUtil.py check /Applications/SMJobBlessApp.app
-```
+
 

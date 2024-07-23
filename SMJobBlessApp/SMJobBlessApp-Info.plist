@@ -10,12 +10,8 @@
 	<string>com.apple.bsd.SMJobBlessApp</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.5</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.5</string>
 	<key>NSHumanReadableCopyright</key>
@@ -24,10 +20,12 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>com.apple.bsd.SMJobBlessHelper</key>
-		<string>identifier "com.apple.bsd.SMJobBlessHelper" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		<string>identifier &quot;com.apple.bsd.SMJobBlessHelper&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)&quot; and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
 	</dict>
 </dict>
 </plist>

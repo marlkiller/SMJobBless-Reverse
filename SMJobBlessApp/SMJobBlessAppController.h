@@ -55,4 +55,7 @@
     AuthorizationRef        _authRef;
 }
 
+@property (nonatomic, strong) NSXPCConnection *helperToolConnection;
+
+
 @end

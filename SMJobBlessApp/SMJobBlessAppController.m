@@ -52,8 +52,12 @@ Copyright (C) 2013 Apple Inc. All Rights Reserved.
 
 #import <ServiceManagement/ServiceManagement.h>
 #import <Security/Authorization.h>
+#import "HelperToolProtocol.h"
 
 @implementation SMJobBlessAppController
+
+
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
@@ -67,19 +71,38 @@ Copyright (C) 2013 Apple Inc. All Rights Reserved.
         self->_authRef = NULL;
     }
     
+    // 安装 helper
 	if (![self blessHelperWithLabel:@"com.apple.bsd.SMJobBlessHelper" error:&error]) {
-		NSLog(@"Something went wrong! %@ / %d", [error domain], (int) [error code]);
+		NSLog(@">>>>>> Something went wrong! %@ / %d", [error domain], (int) [error code]);
 	} else {
 		/* At this point, the job is available. However, this is a very
 		 * simple sample, and there is no IPC infrastructure set up to
 		 * make it launch-on-demand. You would normally achieve this by
 		 * using XPC (via a MachServices dictionary in your launchd.plist).
 		 */
-		NSLog(@"Job is available!");
+		NSLog(@">>>>>> Job is available!");
 		
 		[self->_textField setHidden:false];
+        
+        
+        // 1. 先 XPC 应用建立连接
+        [self connectToHelperTool];
+        
+
+        // 3 获取到 XPC 应用的 exportedObject，因为方法返回的是实现了这个协议的对象，所以协议的匹配很关键
+        id<HelperToolProtocol> service = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * _Nonnull error) {
+            NSLog(@">>>>>> get remote object proxy error: %@", error);
+        }];
+        
+        // 4. 远程调用
+        [service performCalculationWithNumber:@1 andNumber:@2 withReply:^(NSNumber *number)  {
+            NSLog(@">>>>>> performCalculationWithNumber %@",number);
+        }];
+        
+        
 	}
 }
+
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
@@ -89,47 +112,64 @@ Copyright (C) 2013 Apple Inc. All Rights Reserved.
 
 - (BOOL)blessHelperWithLabel:(NSString *)label error:(NSError **)errorPtr;
 {
-	BOOL result = NO;
-    NSError * error = nil;
+    // 1 构造申请权限所需要的参数，官方例子中没有这一步
+    AuthorizationItem authItem = { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
+    AuthorizationRights authRights = { 1, &authItem };
+    AuthorizationFlags flags = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
 
-	AuthorizationItem authItem		= { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
-	AuthorizationRights authRights	= { 1, &authItem };
-	AuthorizationFlags flags        =	kAuthorizationFlagDefaults |
-										kAuthorizationFlagInteractionAllowed |
-										kAuthorizationFlagPreAuthorize |
-										kAuthorizationFlagExtendRights;
-
-	/* Obtain the right to install our privileged helper tool (kSMRightBlessPrivilegedHelper). */
-	OSStatus status = AuthorizationCopyRights(self->_authRef, &authRights, kAuthorizationEmptyEnvironment, flags, NULL);
-	
-    if (status != errAuthorizationSuccess)
-    {
-		error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
-	}
-    else
-    {
-        CFErrorRef  cfError;
-        
-		/* This does all the work of verifying the helper tool against the application
-		 * and vice-versa. Once verification has passed, the embedded launchd.plist
-		 * is extracted and placed in /Library/LaunchDaemons and then loaded. The
-		 * executable is placed in /Library/PrivilegedHelperTools.
-		 */
-		result = (BOOL) SMJobBless(kSMDomainSystemLaunchd, (CFStringRef)label, self->_authRef, &cfError);
-        
-        if (!result)
-        {
-            error = CFBridgingRelease(cfError);
+    AuthorizationRef authRef = NULL;
+    // 2 申请权限，如果这一步失败了，那我们的应用就不能做任何需要用户授权的操作了；官方例子中因为少了构造参数的步骤，所以这里会变成 AuthorizationCreate(NULL, NULL, 0, &authRef)
+    OSStatus status = AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &authRef);
+    if (status != errAuthorizationSuccess) {
+        NSLog(@">>>>>> Failed to create AuthorizationRef, return code %i", status);
+        return NO;
+    } else {
+        CFErrorRef error;
+        // 3 使用题外话里讲到的 API 来安装我们的 XPC 应用，其中，kSMDomainSystemLaunchd 表示我们要使用 launchd 服务（这也是目前仅有的可选项），第二个参数是我们之前设置的 XPC 应用的 label
+        Boolean success = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)@"com.apple.bsd.SMJobBlessHelper", authRef, &error);
+        if (success) {
+            NSLog(@">>>>>> job bless success");
+            return YES;
+        } else {
+            NSLog(@">>>>>> job bless error: %@", (__bridge NSError *)error);
+            CFRelease(error);
+            return NO;
         }
-	}
-    
-    if ( ! result && (errorPtr != NULL) )
-    {
-        assert(error != nil);
-        *errorPtr = error;
     }
-	
-	return result;
 }
+- (void)connectToHelperTool
+    // Ensures that we're connected to our helper tool.
+{
+    assert([NSThread isMainThread]);
+    if (self.helperToolConnection == nil) {
+        // 1 通过 label 找到特定 XPC 应用并建立连接，建议把这个连接实例保存起来，避免重复创建带来别的问题
+        self.helperToolConnection = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.bsd.SMJobBlessHelper" options:NSXPCConnectionPrivileged];
+        // 2 这一步参数里的协议就是我们在 XPC 应用中声明的协议，两边的协议要对得上才能拿到 XPC 应用中暴露出来的正确对象
+        self.helperToolConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperToolProtocol)];
+        // 3 大段注释是在解释为什么这里不需要担心循环引用的问题；要注意的是如果我们把连接实例存了起来，最好是像这样在 invalidationHandler 里置空，在其他地方通过 [connection invalidate]来实现断连
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-retain-cycles"
+        // We can ignore the retain cycle warning because a) the retain taken by the
+        // invalidation handler block is released by us setting it to nil when the block
+        // actually runs, and b) the retain taken by the block passed to -addOperationWithBlock:
+        // will be released when that operation completes and the operation itself is deallocated
+        // (notably self does not have a reference to the NSBlockOperation).
+        self.helperToolConnection.invalidationHandler = ^{
+            NSLog(@">>>>>> connection invalidated");
+        };
+        
+        self.helperToolConnection.interruptionHandler = ^{
+            // Handle the connection interruption
+            NSLog(@">>>>>> connection interrupted");
+        };
+
+       
+        
+        #pragma clang diagnostic pop
+        // 4 手动调用 resume 来建立连接，调用后 XPC 应用那边才会收到 -[listener:shouldAcceptNewConnection:] 回调
+        [self.helperToolConnection resume];
+    }
+}
+
 
 @end

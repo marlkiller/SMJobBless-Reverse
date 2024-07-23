@@ -47,9 +47,8 @@ Dict {
     com.apple.bsd.SMJobBlessHelper = identifier "com.apple.bsd.SMJobBlessHelper"
 }
 
-
-
-./mac_patch_helper "SMJobBlessApp"
+chmod  a+x mac_patch_helper 
+sudo mac_patch_helper "SMJobBlessApp"
 
 
 sudo codesign -f -s - --all-architectures --deep /Applications/SMJobBlessApp.app/Contents/Library/LaunchServices/com.apple.bsd.SMJobBlessHelper

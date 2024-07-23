@@ -3,16 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		4BE4905110445D49006BE471 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE4904D10445D49006BE471 /* main.m */; };
-		4BE4906110445E13006BE471 /* SMJobBlessHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BE4905510445DDD006BE471 /* SMJobBlessHelper.c */; };
+		4BE4906110445E13006BE471 /* SMJobBlessHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE4905510445DDD006BE471 /* SMJobBlessHelper.m */; };
 		4BE4906410445F2F006BE471 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BE4906310445F2F006BE471 /* Security.framework */; };
 		4BE4906810445F36006BE471 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BE4906710445F36006BE471 /* ServiceManagement.framework */; };
-		4BE49092104463A0006BE471 /* com.apple.bsd.SMJobBlessHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4BE4905D10445E0A006BE471 /* com.apple.bsd.SMJobBlessHelper */; };
+		4BE49092104463A0006BE471 /* com.apple.bsd.SMJobBlessHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4BE4905D10445E0A006BE471 /* com.apple.bsd.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B559233C2C4FD0FB00A7C8B2 /* HelperTool.m in Sources */ = {isa = PBXBuildFile; fileRef = B559233B2C4FD0FB00A7C8B2 /* HelperTool.m */; };
 		BF04235611C0531400431286 /* SMJobBlessAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF04235511C0531400431286 /* SMJobBlessAppController.m */; };
 		BF65C19111B985C0007C20AB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF65C19011B985C0007C20AB /* MainMenu.xib */; };
 /* End PBXBuildFile section */
@@ -46,7 +47,7 @@
 		4BE4904D10445D49006BE471 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4BE4905310445DDD006BE471 /* SMJobBlessHelper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Info.plist"; sourceTree = "<group>"; };
 		4BE4905410445DDD006BE471 /* SMJobBlessHelper-Launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Launchd.plist"; sourceTree = "<group>"; };
-		4BE4905510445DDD006BE471 /* SMJobBlessHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SMJobBlessHelper.c; sourceTree = "<group>"; };
+		4BE4905510445DDD006BE471 /* SMJobBlessHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMJobBlessHelper.m; sourceTree = "<group>"; };
 		4BE4905D10445E0A006BE471 /* com.apple.bsd.SMJobBlessHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.apple.bsd.SMJobBlessHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BE4906310445F2F006BE471 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4BE4906710445F36006BE471 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
@@ -54,6 +55,11 @@
 		B53333C82C4EC1C6003ACE49 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B53333C92C4EC1C6003ACE49 /* patch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = patch.json; sourceTree = "<group>"; };
 		B53333CA2C4EC1C6003ACE49 /* mac_patch_helper */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mac_patch_helper; sourceTree = "<group>"; };
+		B559233B2C4FD0FB00A7C8B2 /* HelperTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelperTool.m; sourceTree = "<group>"; };
+		B559233D2C4FE92A00A7C8B2 /* SMJobBlessApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SMJobBlessApp.entitlements; sourceTree = "<group>"; };
+		B559233E2C4FE93E00A7C8B2 /* com.apple.bsd.SMJobBlessHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.apple.bsd.SMJobBlessHelper.entitlements; sourceTree = "<group>"; };
+		B55923542C4FF10100A7C8B2 /* HelperToolProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperToolProtocol.h; sourceTree = "<group>"; };
+		B55923552C4FF17A00A7C8B2 /* HelperTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperTool.h; sourceTree = "<group>"; };
 		BF04235411C0531400431286 /* SMJobBlessAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMJobBlessAppController.h; sourceTree = "<group>"; };
 		BF04235511C0531400431286 /* SMJobBlessAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMJobBlessAppController.m; sourceTree = "<group>"; };
 		BF65C19011B985C0007C20AB /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -94,6 +100,7 @@
 		29B97314FDCFA39411CA2CEA /* SMJobBless */ = {
 			isa = PBXGroup;
 			children = (
+				B559233E2C4FE93E00A7C8B2 /* com.apple.bsd.SMJobBlessHelper.entitlements */,
 				B53333CA2C4EC1C6003ACE49 /* mac_patch_helper */,
 				B53333C92C4EC1C6003ACE49 /* patch.json */,
 				B53333C82C4EC1C6003ACE49 /* README.md */,
@@ -120,6 +127,7 @@
 		4BE4904710445D49006BE471 /* SMJobBlessApp */ = {
 			isa = PBXGroup;
 			children = (
+				B559233D2C4FE92A00A7C8B2 /* SMJobBlessApp.entitlements */,
 				4BE4904C10445D49006BE471 /* SMJobBlessApp-Info.plist */,
 				BF65C19011B985C0007C20AB /* MainMenu.xib */,
 				4BE4904D10445D49006BE471 /* main.m */,
@@ -132,9 +140,12 @@
 		4BE4905210445DDD006BE471 /* SMJobBlessHelper */ = {
 			isa = PBXGroup;
 			children = (
+				B55923552C4FF17A00A7C8B2 /* HelperTool.h */,
+				B55923542C4FF10100A7C8B2 /* HelperToolProtocol.h */,
 				4BE4905310445DDD006BE471 /* SMJobBlessHelper-Info.plist */,
 				4BE4905410445DDD006BE471 /* SMJobBlessHelper-Launchd.plist */,
-				4BE4905510445DDD006BE471 /* SMJobBlessHelper.c */,
+				4BE4905510445DDD006BE471 /* SMJobBlessHelper.m */,
+				B559233B2C4FD0FB00A7C8B2 /* HelperTool.m */,
 			);
 			path = SMJobBlessHelper;
 			sourceTree = "<group>";
@@ -184,7 +195,8 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					4BE4905C10445E0A006BE471 = {
 						DevelopmentTeam = PF34J7Z7XR;
@@ -196,11 +208,11 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SMJobBless" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SMJobBless */;
 			projectDirPath = "";
@@ -228,7 +240,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BE4906110445E13006BE471 /* SMJobBlessHelper.c in Sources */,
+				4BE4906110445E13006BE471 /* SMJobBlessHelper.m in Sources */,
+				B559233C2C4FD0FB00A7C8B2 /* HelperTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,9 +268,14 @@
 		4BE4905F10445E0B006BE471 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = com.apple.bsd.SMJobBlessHelper.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PF34J7Z7XR;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "SMJobBlessHelper/SMJobBlessHelper-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				OTHER_LDFLAGS = (
@@ -270,6 +288,7 @@
 					__launchd_plist,
 					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.bsd.SMJobBlessHelper;
 				PRODUCT_NAME = com.apple.bsd.SMJobBlessHelper;
 				SKIP_INSTALL = YES;
 			};
@@ -278,9 +297,14 @@
 		4BE4906010445E0B006BE471 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = com.apple.bsd.SMJobBlessHelper.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PF34J7Z7XR;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "SMJobBlessHelper/SMJobBlessHelper-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				OTHER_LDFLAGS = (
@@ -293,6 +317,7 @@
 					__launchd_plist,
 					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.bsd.SMJobBlessHelper;
 				PRODUCT_NAME = com.apple.bsd.SMJobBlessHelper;
 				SKIP_INSTALL = YES;
 			};
@@ -301,12 +326,18 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = SMJobBlessApp/SMJobBlessApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PF34J7Z7XR;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "SMJobBlessApp/SMJobBlessApp-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.bsd.SMJobBlessApp;
 				PRODUCT_NAME = SMJobBlessApp;
 			};
 			name = Debug;
@@ -314,12 +345,18 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = SMJobBlessApp/SMJobBlessApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PF34J7Z7XR;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "SMJobBlessApp/SMJobBlessApp-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.bsd.SMJobBlessApp;
 				PRODUCT_NAME = SMJobBlessApp;
 			};
 			name = Release;
@@ -328,18 +365,33 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -369,18 +421,32 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;

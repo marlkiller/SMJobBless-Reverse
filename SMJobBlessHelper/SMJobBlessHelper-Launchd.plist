@@ -4,5 +4,22 @@
 <dict>
 	<key>Label</key>
 	<string>com.apple.bsd.SMJobBlessHelper</string>
+	<key>Program</key>
+	<string>/Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper</string>
+	<key>ProgramArguments</key>
+	<string>/Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper</string>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>/var/log/com.apple.bsd.SMJobBlessHelper.log</string>
+	<key>StandardErrorPath</key>
+	<string>/var/log/com.apple.bsd.SMJobBlessHelper.err</string>
+	<key>MachServices</key>
+	<dict>
+		<key>com.apple.bsd.SMJobBlessHelper</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

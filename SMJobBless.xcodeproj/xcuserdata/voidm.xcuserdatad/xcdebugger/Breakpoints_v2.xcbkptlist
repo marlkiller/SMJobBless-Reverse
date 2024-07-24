@@ -7,16 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B696D770-B95D-498C-BE0E-B68E023C98CD"
+            uuid = "BF7C8C43-48D1-45BD-9F2E-95FB270161EA"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SMJobBlessApp/SMJobBlessAppController.m"
+            filePath = "SMJobBlessApp/AppSignatureChecker.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "-applicationDidFinishLaunching:"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "+checkSignatureInfoForAppAtPath:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DEDECB21-A152-4E04-9300-5BBC272109DF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SMJobBlessApp/AppSignatureChecker.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "7"
+            endingLineNumber = "7"
+            landmarkName = "+checkSignatureInfoForAppAtPath:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BF1A4D9A-04B7-4B1C-8C39-4A899FA8A00A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SMJobBlessApp/AppSignatureChecker.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "+checkSignatureInfoForAppAtPath:error:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

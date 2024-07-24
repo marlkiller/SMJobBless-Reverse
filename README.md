@@ -43,12 +43,12 @@ Dict {
 sudo /usr/libexec/PlistBuddy -c "Set :SMPrivilegedExecutables:com.apple.bsd.SMJobBlessHelper \"identifier \\\"com.apple.bsd.SMJobBlessHelper\\\"\"" "/Applications/SMJobBlessApp.app/Contents/Info.plist"
 sudo /usr/libexec/PlistBuddy -c 'Print SMPrivilegedExecutables' "/Applications/SMJobBlessApp.app/Contents/Info.plist"
 
-Dict {
-    com.apple.bsd.SMJobBlessHelper = identifier "com.apple.bsd.SMJobBlessHelper"
-}
+# Dict {
+#     com.apple.bsd.SMJobBlessHelper = identifier "com.apple.bsd.SMJobBlessHelper"
+# }
 
 chmod  a+x mac_patch_helper 
-sudo mac_patch_helper "SMJobBlessApp"
+sudo ./mac_patch_helper "SMJobBlessApp"
 
 
 sudo codesign -f -s - --all-architectures --deep /Applications/SMJobBlessApp.app/Contents/Library/LaunchServices/com.apple.bsd.SMJobBlessHelper

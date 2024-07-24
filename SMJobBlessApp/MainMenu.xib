@@ -248,28 +248,28 @@
         <window title="SMJobBlessApp" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" animationBehavior="default" id="367">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="contentRect" x="196" y="240" width="586" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
-            <view key="contentView" id="368">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+            <view key="contentView" wantsLayer="YES" id="368">
+                <rect key="frame" x="0.0" y="0.0" width="586" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField hidden="YES" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="450">
-                        <rect key="frame" x="73" y="120" width="334" height="29"/>
+                        <rect key="frame" x="20" y="318" width="546" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="The Helper Tool is available!" id="451">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="bless helper went wrong!" drawsBackground="YES" id="451">
                             <font key="font" metaFont="system" size="24"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-321" y="-116"/>
+            <point key="canvasLocation" x="-268" y="-71"/>
         </window>
         <customObject id="449" customClass="SMJobBlessAppController">
             <connections>
-                <outlet property="_textField" destination="450" id="453"/>
+                <outlet property="_helperInfoText" destination="450" id="453"/>
             </connections>
         </customObject>
     </objects>

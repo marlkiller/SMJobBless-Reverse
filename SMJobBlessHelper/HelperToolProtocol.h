@@ -16,8 +16,8 @@
 /*
  To use the service from an application or other process, use NSXPCConnection to establish a connection to the service by doing something like this:
 
-     _connectionToService = [[NSXPCConnection alloc] initWithServiceName:@"com.voidm.-ffffffffffffffff.ffffffffffffffff"];
-     _connectionToService.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ffffffffffffffffProtocol)];
+     _connectionToService = [[NSXPCConnection alloc] initWithServiceName:@"com.voidm.xxx.xxx"];
+     _connectionToService.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperToolProtocol)];
      [_connectionToService resume];
 
 Once you have a connection to the service, you can use it like this:

@@ -14,6 +14,9 @@
 		4BE49092104463A0006BE471 /* com.apple.bsd.SMJobBlessHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4BE4905D10445E0A006BE471 /* com.apple.bsd.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B559233C2C4FD0FB00A7C8B2 /* HelperTool.m in Sources */ = {isa = PBXBuildFile; fileRef = B559233B2C4FD0FB00A7C8B2 /* HelperTool.m */; };
+		B5E889022C512AA80072EE6E /* AppSignatureChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E889012C512AA80072EE6E /* AppSignatureChecker.m */; };
+		B5E889032C5143BC0072EE6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BE4906310445F2F006BE471 /* Security.framework */; };
+		B5E889062C514AA70072EE6E /* ConnectionVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E889052C514AA70072EE6E /* ConnectionVerifier.m */; };
 		BF04235611C0531400431286 /* SMJobBlessAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF04235511C0531400431286 /* SMJobBlessAppController.m */; };
 		BF65C19111B985C0007C20AB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF65C19011B985C0007C20AB /* MainMenu.xib */; };
 /* End PBXBuildFile section */
@@ -60,6 +63,10 @@
 		B559233E2C4FE93E00A7C8B2 /* com.apple.bsd.SMJobBlessHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.apple.bsd.SMJobBlessHelper.entitlements; sourceTree = "<group>"; };
 		B55923542C4FF10100A7C8B2 /* HelperToolProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperToolProtocol.h; sourceTree = "<group>"; };
 		B55923552C4FF17A00A7C8B2 /* HelperTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperTool.h; sourceTree = "<group>"; };
+		B5E889002C512A180072EE6E /* AppSignatureChecker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppSignatureChecker.h; sourceTree = "<group>"; };
+		B5E889012C512AA80072EE6E /* AppSignatureChecker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppSignatureChecker.m; sourceTree = "<group>"; };
+		B5E889042C514A8B0072EE6E /* ConnectionVerifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionVerifier.h; sourceTree = "<group>"; };
+		B5E889052C514AA70072EE6E /* ConnectionVerifier.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectionVerifier.m; sourceTree = "<group>"; };
 		BF04235411C0531400431286 /* SMJobBlessAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMJobBlessAppController.h; sourceTree = "<group>"; };
 		BF04235511C0531400431286 /* SMJobBlessAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMJobBlessAppController.m; sourceTree = "<group>"; };
 		BF65C19011B985C0007C20AB /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -72,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5E889032C5143BC0072EE6E /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +141,8 @@
 				4BE4904D10445D49006BE471 /* main.m */,
 				BF04235411C0531400431286 /* SMJobBlessAppController.h */,
 				BF04235511C0531400431286 /* SMJobBlessAppController.m */,
+				B5E889002C512A180072EE6E /* AppSignatureChecker.h */,
+				B5E889012C512AA80072EE6E /* AppSignatureChecker.m */,
 			);
 			path = SMJobBlessApp;
 			sourceTree = "<group>";
@@ -146,6 +156,8 @@
 				4BE4905410445DDD006BE471 /* SMJobBlessHelper-Launchd.plist */,
 				4BE4905510445DDD006BE471 /* SMJobBlessHelper.m */,
 				B559233B2C4FD0FB00A7C8B2 /* HelperTool.m */,
+				B5E889042C514A8B0072EE6E /* ConnectionVerifier.h */,
+				B5E889052C514AA70072EE6E /* ConnectionVerifier.m */,
 			);
 			path = SMJobBlessHelper;
 			sourceTree = "<group>";
@@ -201,9 +213,6 @@
 					4BE4905C10445E0A006BE471 = {
 						DevelopmentTeam = PF34J7Z7XR;
 					};
-					8D1107260486CEB800E47090 = {
-						DevelopmentTeam = PF34J7Z7XR;
-					};
 				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SMJobBless" */;
@@ -241,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BE4906110445E13006BE471 /* SMJobBlessHelper.m in Sources */,
+				B5E889062C514AA70072EE6E /* ConnectionVerifier.m in Sources */,
 				B559233C2C4FD0FB00A7C8B2 /* HelperTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BE4905110445D49006BE471 /* main.m in Sources */,
+				B5E889022C512AA80072EE6E /* AppSignatureChecker.m in Sources */,
 				BF04235611C0531400431286 /* SMJobBlessAppController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

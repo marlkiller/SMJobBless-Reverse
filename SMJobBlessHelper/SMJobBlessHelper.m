@@ -1,21 +1,32 @@
 //
-//  main.m
-//  ffffffffffffffff
+//  SMJobBlessHelper.m
 //
-//  Created by 马治武 on 2024/7/23.
+//  Created by voidm on 2024/7/23.
 //
 
 #import <Foundation/Foundation.h>
 #import "HelperTool.h"
+#import <Security/Security.h>
+#import "ConnectionVerifier.h"
 
 @interface ServiceDelegate : NSObject <NSXPCListenerDelegate>
+
+@property (nonatomic, readonly) audit_token_t auditToken;
+
 @end
 
 @implementation ServiceDelegate
 
+
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection {
     
     NSLog(@">>>>>> shouldAcceptNewConnection");
+    
+    if ([ConnectionVerifier isValid:newConnection] == NO) {
+        return NO;
+    }
+    
+    
     // This method is where the NSXPCListener configures, accepts, and resumes a new incoming NSXPCConnection.
     
     // Configure the connection.
@@ -46,11 +57,11 @@ int main(int argc, const char *argv[])
     ServiceDelegate *delegate = [ServiceDelegate new];
     
     // Set up the one NSXPCListener for this service. It will handle all incoming connections.
-
+    
     NSXPCListener *listener = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.bsd.SMJobBlessHelper"];
     // The latter is only useful for regular XPC service (which would be stored in the App's bundle, not in /Library/.... If you mix it up, you'll get a crash report in Console.app that will say:
     // NSXPCListener *listener = [NSXPCListener serviceListener];
-
+    
     listener.delegate = delegate;
     
     // Resuming the serviceListener starts this service. This method does not return.

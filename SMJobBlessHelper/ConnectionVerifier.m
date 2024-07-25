@@ -26,27 +26,21 @@
     //status
     OSStatus status = !errSecSuccess;
     CFErrorRef error = nil;
-    
-    //audit token
+
+    //extract audit token
     audit_token_t auditToken = {0};
-    
-    //task ref
+    auditToken = connection.auditToken;
     SecTaskRef taskRef = 0;
     
     //code ref
     SecCodeRef codeRef = NULL;
-    
     //code signing info
     CFDictionaryRef csInfo = NULL;
-    
     //cs flags
     uint32_t csFlags = 0;
-    
-    //signing req string (main app)
+    // diy
     NSString* requirement = nil;
-
-    //extract audit token
-    auditToken = connection.auditToken;
+    
     
     //obtain dynamic code ref
     status = SecCodeCopyGuestWithAttributes(NULL, (__bridge CFDictionaryRef)(@{
@@ -75,14 +69,15 @@
     }
     
     
-    //validate code
-    status = SecCodeCheckValidity(codeRef, kSecCSDefaultFlags, NULL);
-    if(errSecSuccess != status)
-    {
-        NSLog(@">>>>>>> SecCodeCheckValidity failed with status = %d", (int)status);
-        return NO;
-    }
+    // un used validate code
+    // status = SecCodeCheckValidity(codeRef, kSecCSDefaultFlags, NULL);
+    // if(errSecSuccess != status)
+    // {
+    //     NSLog(@">>>>>>> SecCodeCheckValidity failed with status = %d", (int)status);
+    //     return NO;
+    // }
     
+    // TODO 这里应该是 staticCodeRef
     //get code signing info
     status = SecCodeCopySigningInformation(codeRef, kSecCSSigningInformation, &csInfo);
     if(errSecSuccess != status)
@@ -92,6 +87,7 @@
     }
     
     
+    // TODO flags
     // flags
     SecCSFlags flags;
     CFNumberRef flagsNumber = (CFNumberRef)CFDictionaryGetValue(csInfo, kSecCodeInfoFlags);
@@ -101,26 +97,8 @@
    }
     CFNumberGetValue(flagsNumber, kCFNumberSInt32Type, &flags);
     NSLog(@">>>>>> flags %d",flags);
+
         
-    
-    // TODO HACK
-    NSString *teamIdentifier = nil;
-    CFStringRef teamIdRef = (CFStringRef)CFDictionaryGetValue(csInfo, kSecCodeInfoTeamIdentifier);
-    if (teamIdRef) {
-        teamIdentifier = (__bridge_transfer NSString *)teamIdRef;
-        // PF34J7Z7XR
-        NSLog(@">>>>>>> teamIdentifier = %@", teamIdentifier);
-    }else {
-        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier is nil");
-        return NO;
-    }
-
-    CFPropertyListRef plist = CFDictionaryGetValue(csInfo, kSecCodeInfoPList);
-    NSData *plistData = CFPropertyListCreateXMLData(kCFAllocatorDefault, plist);
-    NSString *plistString = [[NSString alloc] initWithData:plistData encoding:NSUTF8StringEncoding];
-                NSLog(@">>>>>> Info.plist content:\n%@", plistString);
-
-    
     //extract flags
     csFlags = [((__bridge NSDictionary *)csInfo)[(__bridge NSString *)kSecCodeInfoStatus] unsignedIntValue];
     //gotta have hardened runtime
@@ -131,7 +109,27 @@
 //        return NO;
 //    }
     
-  
+
+    // TODO _kSecCodeInfoEntitlementsDict
+        
+    
+    // TODO HACK
+    NSString *teamIdentifier = nil;
+    CFStringRef teamIdRef = (CFStringRef)CFDictionaryGetValue(csInfo, kSecCodeInfoTeamIdentifier);
+    if (teamIdRef) {
+        teamIdentifier = (__bridge_transfer NSString *)teamIdRef;
+        // PF34J7Z7XR | BBB9PC3J | J3CP9BBBN6
+        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier = %@", teamIdentifier);
+    }else {
+        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier is nil");
+        return NO;
+    }
+
+    CFPropertyListRef plist = CFDictionaryGetValue(csInfo, kSecCodeInfoPList);
+    NSData *plistData = CFPropertyListCreateXMLData(kCFAllocatorDefault, plist);
+    NSString *plistString = [[NSString alloc] initWithData:plistData encoding:NSUTF8StringEncoding];
+                NSLog(@">>>>>> Info.plist content:\n%@", plistString);
+
     
     
     // 使用 SecRequirementCreateWithString 进行校验

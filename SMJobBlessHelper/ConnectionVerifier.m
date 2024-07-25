@@ -38,9 +38,10 @@
     //code signing info
     CFDictionaryRef csInfo = NULL;
     //cs flags
-    uint32_t csFlags = 0;
-    // diy
-    NSString* requirement = nil;
+    // uint32_t csFlags = 0;
+    
+    // NSString* requirement = [NSString stringWithFormat:@"identifier \"com.apple.bsd.SMJobBlessApp\""];
+    NSString* requirement = [NSString stringWithFormat:@"identifier \"com.apple.bsd.SMJobBlessApp\" and anchor apple generic and certificate leaf[subject.CN] = \"Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)\" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */"];
     
     
     // 用于根据指定的属性创建或获取一个代码对象,这里根据主应用程序的审计令牌获取到的主应用程序的 SecCodeRef
@@ -80,9 +81,8 @@
     //     return NO;
     // }
     
-    // TODO 这里应该是 staticCodeRef
     // 获取代码对象的签名信息。通过调用这个函数，你可以提取代码签名的详细信息，例如签名证书、签名时间等
-    status = SecCodeCopySigningInformation(codeRef, kSecCSSigningInformation, &csInfo);
+    status = SecCodeCopySigningInformation(staticCodeRef, kSecCSSigningInformation, &csInfo);
     if(errSecSuccess != status)
     {
         NSLog(@">>>>>>> SecCodeCopySigningInformation failed with status = %d", (int)status);
@@ -90,43 +90,64 @@
     }
     
     
-    // TODO flags
-    // 检查签名是否有效 flags ?? 
+    // 检查签名是否有效 flags [patch fix]
     SecCSFlags flags;
     CFNumberRef flagsNumber = (CFNumberRef)CFDictionaryGetValue(csInfo, kSecCodeInfoFlags);
    if (flagsNumber == NULL) {
        NSLog(@">>>>>>> kSecCodeInfoFlags is nil");
-       return NO;
+        return NO;
    }
     CFNumberGetValue(flagsNumber, kCFNumberSInt32Type, &flags);
     NSLog(@">>>>>> flags %d",flags);
-
-        
-    //extract flags
-    csFlags = [((__bridge NSDictionary *)csInfo)[(__bridge NSString *)kSecCodeInfoStatus] unsignedIntValue];
-    //gotta have hardened runtime
-//    if( !(CS_VALID & csFlags) &&
-//        !(CS_RUNTIME & csFlags) )
-//    {
-//        NSLog(@">>>>>>> Client app does not have hardened runtime");
-//        return NO;
-//    }
     
 
-    // TODO _kSecCodeInfoEntitlementsDict
-        
-    
-    // TODO HACK
-    NSString *teamIdentifier = nil;
-    CFStringRef teamIdRef = (CFStringRef)CFDictionaryGetValue(csInfo, kSecCodeInfoTeamIdentifier);
-    if (teamIdRef) {
-        teamIdentifier = (__bridge_transfer NSString *)teamIdRef;
-        // PF34J7Z7XR | BBB9PC3J | J3CP9BBBN6
-        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier = %@", teamIdentifier);
-    }else {
-        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier is nil");
+    if( !(CS_VALID & flags) &&
+        !(CS_RUNTIME & flags) )
+    {
+        NSLog(@">>>>>> Client app does not have hardened runtime");
         return NO;
     }
+    
+
+    
+    // [patch fix]
+    CFDictionaryRef entitlementsDict = (CFDictionaryRef)CFDictionaryGetValue(csInfo, kSecCodeInfoEntitlementsDict);
+    if (entitlementsDict != NULL) {
+        NSDictionary *entitlements = (__bridge NSDictionary *)entitlementsDict;
+//        >>>>>> Entitlements: {
+//            "com.apple.security.cs.allow-dyld-environment-variables" = 1;
+//            "com.apple.security.cs.allow-jit" = 1;
+//            "com.apple.security.cs.allow-unsigned-executable-memory" = 1;
+//            "com.apple.security.cs.disable-executable-page-protection" = 1;
+//            "com.apple.security.cs.disable-library-validation" = 1;
+//            "com.apple.security.get-task-allow" = 1;
+//        }
+        NSLog(@">>>>>> Entitlements: %@", entitlements);
+    } else {
+        NSLog(@">>>>>> Entitlements dictionary not found");
+    }
+
+        
+//    NSString *teamIdentifier = nil;
+//    CFStringRef teamIdRef = (CFStringRef)CFDictionaryGetValue(csInfo, kSecCodeInfoTeamIdentifier);
+//    if (teamIdRef) {
+//        teamIdentifier = (__bridge_transfer NSString *)teamIdRef;
+//        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier = %@", teamIdentifier);
+//    }else {
+//        NSLog(@">>>>>>> kSecCodeInfoTeamIdentifier is nil");
+//        return NO;
+//    }
+//    
+//    NSString *identifier = nil;
+//    CFStringRef identifierRef = (CFStringRef)CFDictionaryGetValue(csInfo, kSecCodeInfoIdentifier);
+//    if (identifierRef) {
+//        identifier = (__bridge_transfer NSString *)identifierRef;
+//        NSLog(@">>>>>>> kSecCodeInfoIdentifier = %@", identifier);
+//    }else {
+//        NSLog(@">>>>>>> kSecCodeInfoIdentifier is nil");
+//        return NO;
+//    }
+        
 
     CFPropertyListRef plist = CFDictionaryGetValue(csInfo, kSecCodeInfoPList);
     NSData *plistData = CFPropertyListCreateXMLData(kCFAllocatorDefault, plist);
@@ -137,7 +158,6 @@
     
     // 验证代码的签名是否符合指定的条件
     // requirement = @"anchor apple generic and certificate leaf[subject.CN] = \"Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)\"";
-    requirement = [NSString stringWithFormat:@"identifier \"com.apple.bsd.SMJobBlessApp\" and anchor apple generic and certificate leaf[subject.CN] = \"Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)\" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */"];
     SecRequirementRef requirement_ref = NULL;
     status = SecRequirementCreateWithString((__bridge CFStringRef)requirement, kSecCSDefaultFlags, &requirement_ref);
     if (status != errSecSuccess) {
@@ -146,7 +166,7 @@
     }
     NSLog(@">>>>>> requirement_ref = %@",requirement_ref);
     
-    // 验证代码的签名是否符合特定的要求，并返回详细的错误信息
+    // 验证代码的签名是否符合特定的要求，并返回详细的错误信息 [patch fix]
     status = SecCodeCheckValidityWithErrors(codeRef, kSecCSDefaultFlags, requirement_ref,&error);
     if (status != errSecSuccess) {
         NSLog(@">>>>>> SecCodeCheckValidityWithErrors failed with status = %d", (int)status);

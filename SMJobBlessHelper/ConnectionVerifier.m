@@ -21,6 +21,16 @@
 
 // ref : https://github.com/PhorionTech/Kronos/blob/0d176e19d702e01d6bcc1f1ff7681b946dc9ee6f/TCCKronosExtension/XPC/ConnectionVerifier.m
 // ref : https://developer.apple.com/documentation/security/1395809-seccodecopysigninginformation
+
++ (NSString *)auditTokenToString:(audit_token_t)auditToken {
+    // 501 501 20 501 20 28737 100004 538096
+    NSMutableString *result = [NSMutableString string];
+    for (int i = 0; i < 8; i++) {
+        [result appendFormat:@"%u ", auditToken.val[i]];
+    }
+    return [result stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
 + (BOOL)isValid:(NSXPCConnection*)connection {
     
     
@@ -42,6 +52,8 @@
     
     // NSString* requirement = [NSString stringWithFormat:@"identifier \"com.apple.bsd.SMJobBlessApp\""];
     NSString* requirement = [NSString stringWithFormat:@"identifier \"com.apple.bsd.SMJobBlessApp\" and anchor apple generic and certificate leaf[subject.CN] = \"Apple Development: marlkiller@vip.qq.com (L79ZQ6T579)\" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */"];
+    
+    NSLog(@">>>>>> auditTokenToString = %@",[self auditTokenToString:auditToken]);
     
     
     // 用于根据指定的属性创建或获取一个代码对象,这里根据主应用程序的审计令牌获取到的主应用程序的 SecCodeRef
@@ -150,9 +162,11 @@
         
 
     CFPropertyListRef plist = CFDictionaryGetValue(csInfo, kSecCodeInfoPList);
-    NSData *plistData = CFPropertyListCreateXMLData(kCFAllocatorDefault, plist);
-    NSString *plistString = [[NSString alloc] initWithData:plistData encoding:NSUTF8StringEncoding];
-                NSLog(@">>>>>> Info.plist content:\n%@", plistString);
+    CFStringRef shortVersionString = CFDictionaryGetValue(plist, CFSTR("CFBundleShortVersionString"));
+
+//    NSData *plistData = CFPropertyListCreateXMLData(kCFAllocatorDefault, plist);
+//    NSString *plistString = [[NSString alloc] initWithData:plistData encoding:NSUTF8StringEncoding];
+//                NSLog(@">>>>>> Info.plist content:\n%@", plistString);
 
     
     

@@ -22,9 +22,9 @@
     
     NSLog(@">>>>>> shouldAcceptNewConnection");
     
-    if ([ConnectionVerifier isValid:newConnection] == NO) {
-        return NO;
-    }
+//    if ([ConnectionVerifier isValid:newConnection] == NO) {
+//        return NO;
+//    }
     
     
     // This method is where the NSXPCListener configures, accepts, and resumes a new incoming NSXPCConnection.
@@ -34,7 +34,7 @@
     newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperToolProtocol)];
     
     // Next, set the object that the connection exports. All messages sent on the connection to this service will be sent to the exported object to handle. The connection retains the exported object.
-    HelperTool *exportedObject = [HelperTool new];
+    HelperTool *exportedObject = [[HelperTool new] autorelease];
     newConnection.exportedObject = exportedObject;
     
     // Resuming the connection allows the system to deliver more incoming messages.
@@ -54,7 +54,7 @@ int main(int argc, const char *argv[])
     
     NSLog(@">>>>>> help started");
     // Create the delegate for the service.
-    ServiceDelegate *delegate = [ServiceDelegate new];
+    ServiceDelegate *delegate = [[ServiceDelegate new] autorelease];
     
     // Set up the one NSXPCListener for this service. It will handle all incoming connections.
     

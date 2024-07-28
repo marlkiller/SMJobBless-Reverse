@@ -51,11 +51,14 @@
 
 @interface SMJobBlessAppController : NSObject <NSApplicationDelegate> {
 	IBOutlet NSTextField *  _helperInfoText;
+//    AuthorizationRef        _authRef;
     
-    AuthorizationRef        _authRef;
+
 }
 
 @property (nonatomic, strong) NSXPCConnection *helperToolConnection;
 
+- (IBAction)kvButtonAction:(id)sender;
+- (IBAction)docButtonAction:(id)sender;
 
 @end

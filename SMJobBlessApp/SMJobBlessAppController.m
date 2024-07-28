@@ -65,12 +65,12 @@
     
 #pragma unused(notification)
     NSError *error = nil;
-    OSStatus status = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &self->_authRef);
-    if (status != errAuthorizationSuccess) {
-        /* AuthorizationCreate really shouldn't fail. */
-        assert(NO);
-        self->_authRef = NULL;
-    }
+//    OSStatus status = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &self->_authRef);
+//    if (status != errAuthorizationSuccess) {
+//        /* AuthorizationCreate really shouldn't fail. */
+//        assert(NO);
+//        self->_authRef = NULL;
+//    }
     
     // 安装 helper
     if (![self blessHelperWithLabel:@"com.apple.bsd.SMJobBlessHelper" error:&error]) {
@@ -93,11 +93,11 @@
         
         
         // 3 获取到 XPC 应用的 exportedObject，因为方法返回的是实现了这个协议的对象，所以协议的匹配很关键
-        id<HelperToolProtocol> service = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * _Nonnull error) {
-            NSLog(@">>>>>> get remote object proxy error: %@", error);
+        id<HelperToolProtocol> service = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * _Nonnull _error) {
+            NSLog(@">>>>>> get remote object proxy error: %@", _error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->_helperInfoText
-                 setStringValue:[NSString stringWithFormat:@"Failed to connect to HelperTool : %@", [error domain]]
+                 setStringValue:[NSString stringWithFormat:@"Failed to connect to HelperTool : %@", [_error domain]]
                 ];
             });
         }];
@@ -116,9 +116,8 @@
     }
     
     // 检查 APP 签名信息
-    NSDictionary *appSignatureInfo = [AppSignatureChecker checkSignatureInfoForAppAtPath: [[NSBundle mainBundle] bundlePath] error:&error];
+    [AppSignatureChecker checkSignatureInfoForAppAtPath: [[NSBundle mainBundle] bundlePath] error:&error];
     
-
 }
 
 
@@ -142,8 +141,10 @@
         NSLog(@">>>>>> Failed to create AuthorizationRef, return code %i", status);
         return NO;
     } else {
-        CFErrorRef error;
+        
         // 3 使用题外话里讲到的 API 来安装我们的 XPC 应用，其中，kSMDomainSystemLaunchd 表示我们要使用 launchd 服务（这也是目前仅有的可选项），第二个参数是我们之前设置的 XPC 应用的 label
+        // 'SMJobBless' is deprecated: first deprecated in macOS 13.0 - Please use SMAppService instead
+        CFErrorRef error;
         Boolean success = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)@"com.apple.bsd.SMJobBlessHelper", authRef, &error);
         if (success) {
             NSLog(@">>>>>> job bless success");
@@ -153,6 +154,27 @@
             CFRelease(error);
             return NO;
         }
+
+//        草泥马的, 上面的 API 过期了, 下面的不会用, 各种报错;
+//        SMJobBless LaunchServices
+//        mainAppService
+//        agentServiceWithPlistName LaunchAgents
+//        daemonServiceWithPlistName LaunchDaemons
+//        loginItemServiceWithIdentifier LoginItems
+
+//        >>>>>> get remote object proxy error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.bsd.SMJobBlessHelper was invalidated: failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.bsd.SMJobBlessHelper was invalidated: failed at lookup with error 3 - No such process.}
+//        https://developer.apple.com/documentation/servicemanagement/smappservice?language=objc
+//        SMAppService *service = [SMAppService daemonServiceWithPlistName:@"com.apple.bsd.SMJobBlessHelper.plist"];
+//        NSError *svcError = nil;
+//        if (![service registerAndReturnError:&svcError]) {
+//            NSLog(@">>>>>> Failed to register service: %@", svcError);
+//            return NO;
+//        } else {
+//            NSLog(@">>>>>> Service registered successfully");
+//            return YES;
+//        }
+      
+
     }
 }
 - (void)connectToHelperTool
@@ -165,7 +187,7 @@
         // 1 通过 label 找到特定 XPC 应用并建立连接，建议把这个连接实例保存起来，避免重复创建带来别的问题
         self.helperToolConnection = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.bsd.SMJobBlessHelper" options:NSXPCConnectionPrivileged];
         // 2 这一步参数里的协议就是我们在 XPC 应用中声明的协议，两边的协议要对得上才能拿到 XPC 应用中暴露出来的正确对象
-        self.helperToolConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperToolProtocol)];
+        self.helperToolConnection.remoteObjectInterface = [[NSXPCInterface interfaceWithProtocol:@protocol(HelperToolProtocol)] autorelease];
         // 3 大段注释是在解释为什么这里不需要担心循环引用的问题；要注意的是如果我们把连接实例存了起来，最好是像这样在 invalidationHandler 里置空，在其他地方通过 [connection invalidate]来实现断连
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -190,6 +212,81 @@
         [self.helperToolConnection resume];
     }
 }
+
+
+
+bool useiCloud = false;
+
+- (id)getKVManager {
+    if (useiCloud) {        
+        return  [NSUbiquitousKeyValueStore defaultStore];
+    } else {
+        return [NSUserDefaults standardUserDefaults];
+    }
+}
+
+- (IBAction)kvButtonAction:(id)sender {
+    
+    // com.apple.developer.ubiquity-kvstore-identifier| <string>XXXXXXXXXX.*</string>
+    NSString* keyDev = @"key_dev";
+    
+    id manager = [self getKVManager];
+    NSLog(@">>>>>> kvButtonAction defaultStore= %@", manager);
+        
+    [manager setObject:@"val_dev" forKey:keyDev];
+    [manager synchronize];
+    NSString* val = [manager stringForKey:keyDev];
+    
+    [self->_helperInfoText setStringValue:val];
+    NSLog(@">>>>>> kvButtonAction val = %@", val);
+    
+}
+
+- (NSURL *)getDocFileManager {
+    
+    NSString* dirName = @"dir_dev";
+    
+    NSURL *url = nil;
+    if (useiCloud) {
+        url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:@"ubiquityContainerIdentifier"];
+    } else {
+        url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+    }
+    url = [url URLByAppendingPathComponent:dirName];
+    [[NSFileManager defaultManager] createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:nil];
+    return url;
+}
+
+
+- (IBAction)docButtonAction:(id)sender {
+    
+    // com.apple.developer.ubiquity-container-identifiers | <array><string>XXXXXXXXXX.*</string></array>
+    NSURL* url = [self getDocFileManager];
+    NSLog(@">>>>>> docButtonAction defaultStore= %@", url);
+    
+    NSString *fileName = @"userInfo.txt";
+    NSData *dataToSave = [@"User information" dataUsingEncoding:NSUTF8StringEncoding];
+    NSURL *fileURL = [url URLByAppendingPathComponent:fileName];
+    if (![dataToSave writeToURL:fileURL atomically:YES]) {
+        NSLog(@">>>>>> Failed to save document");
+    }
+    
+    NSData *data = [NSData dataWithContentsOfURL:fileURL];
+    NSString *loadedString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    
+    [self->_helperInfoText setStringValue:loadedString];
+    NSLog(@">>>>>> docButtonAction val = %@", loadedString);
+}
+
+// 实现 dealloc 方法
+- (void)dealloc {
+    // 释放 helperToolConnection
+    self.helperToolConnection = nil;
+    // 调用父类的 dealloc 方法
+    [super dealloc];
+}
+
+
 
 
 @end

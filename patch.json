@@ -10,7 +10,7 @@
         }
       }
     },
-    "clear_certificate":[
+    "helper_plist_resign":[
         "/Applications/SMJobBlessApp.app/Contents/Library/LaunchServices/com.apple.bsd.SMJobBlessHelper"
     ]
   }

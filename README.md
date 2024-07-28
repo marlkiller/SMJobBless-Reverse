@@ -61,6 +61,19 @@ sudo rm /Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper
 ```
 
 
+### APP 存储相关
+
+| 存储方式                  | 适用范围                  | 获取容器代码 | 存储位置 |
+|-------------------------|-------------------------|--------------|---------|
+| **SQLite**              | 结构化数据和复杂查询       | `NSString *databasePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"my_database.sqlite"];` | 本地    |
+| **Core Data**           | 结构化数据和复杂查询       | `NSManagedObjectContext *context = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];` | 本地    |
+| **Keychain**            | 敏感信息                  | `NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword, (__bridge id)kSecAttrAccount: @"com.example.myapp.account", (__bridge id)kSecValueData: [@"my_secure_password" dataUsingEncoding:NSUTF8StringEncoding]};` | 本地    |
+| **UserDefaults**        | 用户偏好设置和小量数据      | `NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];` | 本地    |
+| **Property List (Plist)** | 结构化配置数据            | `NSString *path = [[NSBundle mainBundle] pathForResource:@"SamplePlist" ofType:@"plist"];` | 本地    |
+| **CloudKit**            | 云端数据存储和同步         | `CKContainer *container = [CKContainer defaultContainer];` | iCloud  |
+| **iCloud Document Storage** | 文件数据存储和同步     | `NSURL *ubiquityURL = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];` | iCloud  |
+
+
 ### TODO ??
 
 ```

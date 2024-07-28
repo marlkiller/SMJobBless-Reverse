@@ -1,3 +1,17 @@
+### About
+
+SMJobBless展示了如何安全地安装一个执行特权操作的辅助工具，以及如何将该工具与调用它的应用程序关联起来。
+
+源于官方demo(https://developer.apple.com/library/archive/samplecode/SMJobBless/Introduction/Intro.html) , 做了一些升级:  
+
+- 升级了 xcode 版本
+- helper 中添加了 sec 相关函数校验
+
+helper install 成功, xpc 连接成功后,  主程序窗口会看到 “Successfully connected to HelperTool” 字样提示;
+
+喜欢逆向的同学, 可以拿来 resign / 练手;
+
+
 ### Build
 
 1. xcode 打开项目  

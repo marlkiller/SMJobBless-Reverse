@@ -54,6 +54,8 @@
 #import <Security/Authorization.h>
 #import "HelperToolProtocol.h"
 #import "AppSignatureChecker.h"
+#import <CloudKit/CloudKit.h>
+#import <objc/runtime.h>
 
 
 @implementation SMJobBlessAppController
@@ -217,6 +219,36 @@
 
 bool useiCloud = false;
 
+
+- (IBAction)containerButtonAction:(id)sender{
+ 
+    CKContainer *container = nil;
+    
+    if (useiCloud) {
+        // CKContainer *container = [CKContainer defaultContainer];
+         container = [CKContainer containerWithIdentifier:@"iCloud.com.example.myapp"];
+    }else {
+         container = class_createInstance([CKContainer class], 0);
+    }
+    
+    NSLog(@">>>>>> Container: %@", container);
+
+    // 获取公共数据库
+    CKDatabase *publicDatabase = [container publicCloudDatabase];
+    
+    // 进行数据库操作，例如查询
+    CKRecordID *recordID = [[CKRecordID alloc] initWithRecordName:@"exampleRecord"];
+    [publicDatabase fetchRecordWithID:recordID completionHandler:^(CKRecord *record, NSError *error) {
+        if (error) {
+            NSLog(@">>>>>> Error fetching record: %@", error);
+        } else {
+            NSLog(@">>>>>> Fetched record: %@", record);
+        }
+    }];
+
+    
+    
+}
 - (id)getKVManager {
     if (useiCloud) {        
         return  [NSUbiquitousKeyValueStore defaultStore];
@@ -248,7 +280,7 @@ bool useiCloud = false;
     
     NSURL *url = nil;
     if (useiCloud) {
-        url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:@"ubiquityContainerIdentifier"];
+        url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:@"iCloud.voidm.com"];
     } else {
         url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
     }

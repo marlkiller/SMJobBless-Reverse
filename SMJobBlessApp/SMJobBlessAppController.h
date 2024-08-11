@@ -58,6 +58,8 @@
 
 @property (nonatomic, strong) NSXPCConnection *helperToolConnection;
 
+
+- (IBAction)containerButtonAction:(id)sender;
 - (IBAction)kvButtonAction:(id)sender;
 - (IBAction)docButtonAction:(id)sender;
 

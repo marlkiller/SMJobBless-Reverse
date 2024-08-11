@@ -4,10 +4,12 @@
 <dict>
 	<key>Label</key>
 	<string>com.apple.bsd.SMJobBlessHelper</string>
-	<key>Program</key>
-	<string>/Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper</string>
 	<key>ProgramArguments</key>
-	<string>/Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper</string>
+	<array>
+		<string>/Library/PrivilegedHelperTools/com.apple.bsd.SMJobBlessHelper</string>
+	</array>
+	<key></key>
+	<string></string>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>KeepAlive</key>
